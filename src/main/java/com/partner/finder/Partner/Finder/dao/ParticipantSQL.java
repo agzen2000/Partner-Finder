@@ -16,12 +16,18 @@ import java.util.Properties;
 public class ParticipantSQL implements ParticipantDao {
     private Connection conn;
 
+    // For add project
     private static final String ADD_PROJECT = "INSERT INTO Projects VALUES(?, ?)";
     private static final String GET_PROJECT_COUNT = "SELECT COUNT(*) FROM Projects";
     private static final String ADD_SKILL = "INSERT INTO Skills(projectID, name) VALUES(?,?)";
     private PreparedStatement addProjectStatement;
     private PreparedStatement getProjectCountStatement;
     private PreparedStatement addSkillStatement;
+
+    // For add participant
+    private static final String ADD_PARTICIPANT = "INSERT INTO Participants(projectID, name, contact, skills, " +
+            "message, hashed_password, salt) VALUES(?, ?, ?, ?, ?, ?, ?)";
+    private PreparedStatement addParticipantStatement;
 
     public ParticipantSQL() throws SQLException, IOException {
         this(null, null, null, null);
@@ -66,6 +72,7 @@ public class ParticipantSQL implements ParticipantDao {
         addProjectStatement = conn.prepareStatement(ADD_PROJECT);
         getProjectCountStatement = conn.prepareStatement(GET_PROJECT_COUNT);
         addSkillStatement = conn.prepareStatement(ADD_SKILL);
+        addParticipantStatement = conn.prepareStatement(ADD_PARTICIPANT);
     }
 
     @Override
@@ -99,7 +106,26 @@ public class ParticipantSQL implements ParticipantDao {
 
     @Override
     public void addParticipant(int projectID, Participant participant) {
+        try {
+            String skills = "";
+            for(Skill skill : participant.getSkills()) {
+                skills = skills + " [" + skill.id + "]";
+            }
 
+            addParticipantStatement.clearParameters();
+            addParticipantStatement.setInt(1, projectID);
+            addParticipantStatement.setString(2, participant.getName());
+            addParticipantStatement.setString(3, participant.getContact());
+            addParticipantStatement.setString(4, skills);
+            addParticipantStatement.setString(5, participant.getMessage());
+            addParticipantStatement.setString(6, participant.getHashedPassword());
+            addParticipantStatement.setString(7, participant.getSalt());
+
+            addParticipantStatement.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -116,24 +142,4 @@ public class ParticipantSQL implements ParticipantDao {
     public int deleteParticipant(int projectID, int participantID, String hashedPassword) {
         return 1;
     }
-
-//    private static List<Participant> DB = new ArrayList<>();
-//
-//    @Override
-//    public boolean addParticipant(Participant participant) {
-//        DB.add(participant);
-//        return true;
-//    }
-//
-//    @Override
-//    public List<Participant> selectAllParticipants() {
-//        return DB;
-//    }
-//
-//    @Override
-//    public List<Participant> getParticipants(int projectID, List<Integer> skills) {
-//        return DB;
-//    }
-
-
 }

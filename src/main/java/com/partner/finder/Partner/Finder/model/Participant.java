@@ -10,6 +10,7 @@ public class Participant {
     private final String contact;
     private final List<Skill> skills;
     private final String message;
+
     private final String hashedPassword;
     private final String salt;
 
@@ -47,5 +48,13 @@ public class Participant {
 
     public int getID() {
         return id;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public String getSalt() {
+        return salt;
     }
 }
