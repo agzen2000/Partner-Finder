@@ -1,23 +1,23 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+
 import './App.css';
-import AppFooter from './AppFooter';
-import AppHeader from './AppHeader';
-import UserQuery from './UserQuery';
+import Home from './components/Home';
+import Results from './components/Results';
+
 
 function App() {
   return (
-    <div className="app">
-      <div className="app__header">
-        {/* top gray box with shapes */}
-        <AppHeader />
-      </div>
-      <div className="app__body">
-        <UserQuery />
-      </div>
-      <div className="app__footer">
-        <AppFooter />
-      </div>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/results" component={Results} />
+      </Switch>
+    </Router>
   );
 }
 
