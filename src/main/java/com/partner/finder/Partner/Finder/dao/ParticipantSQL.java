@@ -18,7 +18,7 @@ import java.util.Scanner;
 public class ParticipantSQL implements ParticipantDao {
     private Connection conn;
 
-    // For add project
+    // SQL commands used to add a project to the database
     private static final String ADD_PROJECT = "INSERT INTO Projects VALUES(?, ?)";
     private static final String GET_PROJECT_COUNT = "SELECT COUNT(*) FROM Projects";
     private static final String ADD_SKILL = "INSERT INTO Skills(projectID, name) VALUES(?,?)";
@@ -26,31 +26,44 @@ public class ParticipantSQL implements ParticipantDao {
     private PreparedStatement getProjectCountStatement;
     private PreparedStatement addSkillStatement;
 
-    // For add participant
+    // SQL command used to add a participant to a project
     private static final String ADD_PARTICIPANT = "INSERT INTO Participants(projectID, name, contact, skills, " +
             "message, hashed_password, salt) VALUES(?, ?, ?, ?, ?, ?, ?)";
     private PreparedStatement addParticipantStatement;
 
-    // For get participant
+    // SQL commands to get a set of participants with a set of skills from a project
     private static final String GET_PARTICIPANT = "SELECT * FROM Participants AS P WHERE P.projectID = ?";
     private static final String GET_SKILL = "SELECT * FROM Skills AS S WHERE S.id = ?";
     private PreparedStatement getParticipantStatement;
     private PreparedStatement getSkillStatement;
 
-    // For get skill
+    // SQL command to get a set of qualifications for a certain project
     private static final String GET_PROJECT_SKILLS = "SELECT * FROM Skills AS S WHERE S.projectID = ?";
     private PreparedStatement getProjectSkillsStatement;
 
-    // For delete participant
+    // SQL commands to delete a participant from a project
     private static final String DELETE_PARTICIPANT = "DELETE FROM Participants WHERE id = ?";
     private static final String GET_PARTICIPANT_BY_ID = "SELECT * FROM Participants WHERE id = ?";
     private PreparedStatement deleteParticipantStatement;
     private PreparedStatement getParticipantByIDStatement;
 
+    /**
+     * Initializes a new ParticipantSQL trivially
+     * @throws SQLException If there was an issue connecting with the database
+     */
     public ParticipantSQL() throws SQLException, IOException {
         this(null, null, null, null);
     }
 
+    /**
+     * Initializes a new ParticipantSQL which allows connection to the Peer Finder database
+     * @param serverURL The URL of the database
+     * @param dbName THe name of the database
+     * @param adminName The username of an admin
+     * @param password The admin's password
+     * @throws SQLException If there was an issue connecting with the database.
+     * @throws IOException If unable to read from the file where the above information is stored
+     */
     protected ParticipantSQL(String serverURL, String dbName, String adminName, String password)
             throws SQLException, IOException {
         conn = serverURL == null ? openConnectionFromDbConn()
@@ -59,6 +72,15 @@ public class ParticipantSQL implements ParticipantDao {
         prepareStatements();
     }
 
+    /**
+     * Opens connection to the project database based on passed credentials.
+     * @param serverURL The URL of the database
+     * @param dbName THe name of the database
+     * @param adminName The username of an admin
+     * @param password The admin's password
+     * @return A Connection object representing a connection to the database
+     * @throws SQLException If there was an issue connecting with the database.
+     */
     protected static Connection openConnectionFromCredential(String serverURL, String dbName,
                                                              String adminName, String password) throws SQLException {
         String connectionUrl =
@@ -75,6 +97,12 @@ public class ParticipantSQL implements ParticipantDao {
         return conn;
     }
 
+    /**
+     * Opens a connection to the database
+     * @return A connection to the database
+     * @throws SQLException If could not establish a connection
+     * @throws IOException If could not read credentials from file
+     */
     public static Connection openConnectionFromDbConn() throws SQLException, IOException {
         // Connect to the database with the provided connection configuration
         Properties configProps = new Properties();
@@ -86,6 +114,10 @@ public class ParticipantSQL implements ParticipantDao {
         return openConnectionFromCredential(serverURL, dbName, adminName, password);
     }
 
+    /**
+     * Prepares the SQL statements
+     * @throws SQLException If fails to prepare the statements
+     */
     private void prepareStatements() throws SQLException {
         addProjectStatement = conn.prepareStatement(ADD_PROJECT);
         getProjectCountStatement = conn.prepareStatement(GET_PROJECT_COUNT);
@@ -98,6 +130,11 @@ public class ParticipantSQL implements ParticipantDao {
         getParticipantByIDStatement = conn.prepareStatement(GET_PARTICIPANT_BY_ID);
     }
 
+    /**
+     * Adds a new project to the database.
+     * @param project The project to be added.
+     * @return 1 if the project was added successfully, 0 otherwise.
+     */
     @Override
     public int addProject(Project project) {
         try {
@@ -127,6 +164,11 @@ public class ParticipantSQL implements ParticipantDao {
         return -1;
     }
 
+    /**
+     * Adds a participant to a project
+     * @param projectID The ID of the project.
+     * @param participant The participant.
+     */
     @Override
     public void addParticipant(int projectID, Participant participant) {
         try {
@@ -151,6 +193,8 @@ public class ParticipantSQL implements ParticipantDao {
         }
     }
 
+    // Parses a string representing a list of skills in the database and
+    // Returns those in a list of skill objects
     private List<Skill> getSkills(String skills) throws SQLException {
         List<String> strArr = new ArrayList<>();
         Scanner scan = new Scanner(skills);
@@ -176,6 +220,12 @@ public class ParticipantSQL implements ParticipantDao {
         return skillList;
     }
 
+    /**
+     * Gets a list of all participants in a certain project that contain a given set of qualifications.
+     * @param projectID The ID of the project.
+     * @param skills A list of qualifications that each participant returned should have.
+     * @return A list of all participants that have all the given qualifications.
+     */
     @Override
     public List<Participant> getParticipants(int projectID, List<Integer> skills) {
         List<Participant> participants = new ArrayList<>();
@@ -218,6 +268,11 @@ public class ParticipantSQL implements ParticipantDao {
         return null;
     }
 
+    /**
+     * Gets a list of all qualifications that a project has.
+     * @param projectID The ID of the project.
+     * @return A list of all qualifications for a project.
+     */
     @Override
     public List<Skill> getSkills(int projectID) {
         // id, projectID, name
@@ -239,6 +294,12 @@ public class ParticipantSQL implements ParticipantDao {
         return null;
     }
 
+    /**
+     * Removes a participant from a project.
+     * @param participantID The ID of the participant within a project.
+     * @param hashedPassword The password the participant used to register for the project.
+     * @return 1 if the participant was successfully deleted from the project, 0 otherwise.
+     */
     @Override
     public int deleteParticipant(int participantID, String hashedPassword) {
         try {

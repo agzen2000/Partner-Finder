@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.*;
 
+/**
+ * A class representing a project.
+ * Each participant has a unique id
+ */
 public class Project {
     private final int id;
     private final String name;

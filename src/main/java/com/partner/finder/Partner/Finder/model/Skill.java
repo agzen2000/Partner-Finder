@@ -1,5 +1,9 @@
 package com.partner.finder.Partner.Finder.model;
 
+/**
+ * A class representing a skill.
+ * Each participant has a unique id
+ */
 public class Skill {
     public int id;
     public int projectID;
