@@ -47,7 +47,7 @@ public class MyController {
     public int deleteParticipant(@RequestParam int projectID,
                                  @RequestParam int participantID,
                                  @RequestParam String hashedPassword) {
-        return participantDao.deleteParticipant(projectID, participantID, hashedPassword);
+        return participantDao.deleteParticipant(participantID, hashedPassword);
     }
 
 }
