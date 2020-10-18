@@ -84,7 +84,8 @@ public class ParticipantSQL implements ParticipantDao {
             for(Skill skill : project.getSkills()) {
                 addSkillStatement.clearParameters();
                 addSkillStatement.setInt(1, id);
-                addSkillStatement.setString(2, skill.skill);
+                System.out.println(skill.name);
+                addSkillStatement.setString(2, skill.name);
                 addSkillStatement.execute();
             }
 
