@@ -19,10 +19,14 @@ public class ParticipantService {
         this.participantDao = participantDao;
     }
 
-    public boolean addParticipant(String firstName, String lastName, String email, List<Skill> skills, String message) {
-        Participant participant = new Participant(participantIDCounter, firstName, lastName, email, skills, message);
+    public boolean addParticipant(Participant participant) {
         return participantDao.addParticipant(participant);
     }
+
+//    public boolean addParticipant(String firstName, String lastName, String email, List<Skill> skills, String message) {
+//        Participant participant = new Participant(participantIDCounter, firstName, lastName, email, skills, message);
+//        return participantDao.addParticipant(participant);
+//    }
 
     public List<Participant> getAllParticipants() {
         return participantDao.selectAllParticipants();
