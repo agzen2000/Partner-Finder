@@ -8,9 +8,10 @@ import java.util.UUID;
 
 public interface ParticipantDao {
 
-    public static int idCounter = 0;
+//    public static int idCounter = 0;
 
-    boolean addParticipant(String firstName, String lastName, String email, List<Skill> skills, String message);
+    boolean addParticipant(Participant participant);
+//    boolean addParticipant(String firstName, String lastName, String email, List<Skill> skills, String message);
 
     List<Participant> selectAllParticipants();
 }

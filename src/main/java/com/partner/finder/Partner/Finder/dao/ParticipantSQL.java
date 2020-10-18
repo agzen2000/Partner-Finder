@@ -11,13 +11,11 @@ import java.util.UUID;
 @Repository("sqlDao")
 public class ParticipantSQL implements ParticipantDao {
 
-    private static int participantIDCounter = 0;
     private static List<Participant> DB = new ArrayList<>();
 
     @Override
-    public boolean addParticipant(String firstName, String lastName, String email, List<Skill> skills, String message) {
-        DB.add(new Participant(participantIDCounter, firstName, lastName, email, skills, message));
-        participantIDCounter += 1;
+    public boolean addParticipant(Participant participant) {
+        DB.add(participant);
         return true;
     }
 

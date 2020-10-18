@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public class ParticipantService {
     private final ParticipantDao participantDao;
+    private static int participantIDCounter = 0;
 
     @Autowired
     public ParticipantService(@Qualifier("sqlDao") ParticipantDao participantDao) {
@@ -19,7 +20,8 @@ public class ParticipantService {
     }
 
     public boolean addParticipant(String firstName, String lastName, String email, List<Skill> skills, String message) {
-        return participantDao.addParticipant(new Participant(participantIDCounter, firstName, lastName, email, skills, message));
+        Participant participant = new Participant(participantIDCounter, firstName, lastName, email, skills, message);
+        return participantDao.addParticipant(participant);
     }
 
     public List<Participant> getAllParticipants() {
