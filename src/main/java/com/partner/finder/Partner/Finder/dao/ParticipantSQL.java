@@ -37,6 +37,16 @@ public class ParticipantSQL implements ParticipantDao {
     private PreparedStatement getParticipantStatement;
     private PreparedStatement getSkillStatement;
 
+    // For get skill
+    private static final String GET_PROJECT_SKILLS = "SELECT * FROM Skills AS S WHERE S.projectID = ?";
+    private PreparedStatement getProjectSkillsStatement;
+
+    // For delete participant
+    private static final String DELETE_PARTICIPANT = "DELETE FROM Participants WHERE id = ?";
+    private static final String GET_PARTICIPANT_BY_ID = "SELECT * FROM Participants WHERE id = ?";
+    private PreparedStatement deleteParticipantStatement;
+    private PreparedStatement getParticipantByIDStatement;
+
     public ParticipantSQL() throws SQLException, IOException {
         this(null, null, null, null);
     }
@@ -83,6 +93,9 @@ public class ParticipantSQL implements ParticipantDao {
         addParticipantStatement = conn.prepareStatement(ADD_PARTICIPANT);
         getParticipantStatement = conn.prepareStatement(GET_PARTICIPANT);
         getSkillStatement = conn.prepareStatement(GET_SKILL);
+        getProjectSkillsStatement = conn.prepareStatement(GET_PROJECT_SKILLS);
+        deleteParticipantStatement = conn.prepareStatement(DELETE_PARTICIPANT);
+        getParticipantByIDStatement = conn.prepareStatement(GET_PARTICIPANT_BY_ID);
     }
 
     @Override
@@ -207,11 +220,40 @@ public class ParticipantSQL implements ParticipantDao {
 
     @Override
     public List<Skill> getSkills(int projectID) {
+        // id, projectID, name
+        List<Skill> skills = new ArrayList<>();
+        try {
+            getProjectSkillsStatement.clearParameters();
+            getProjectSkillsStatement.setInt(2, projectID);
+            ResultSet results = getProjectSkillsStatement.executeQuery();
+
+            while (results.next()) {
+                int id = results.getInt("id");
+                String name = results.getString("name");
+                skills.add(new Skill(id, projectID, name));
+            }
+            return skills;
+        } catch (Exception e) {
+            e.printStackTrace();;
+        }
         return null;
     }
 
     @Override
-    public int deleteParticipant(int projectID, int participantID, String hashedPassword) {
-        return 1;
+    public int deleteParticipant(int participantID, String hashedPassword) {
+        try {
+            getParticipantByIDStatement.clearParameters();
+            getParticipantByIDStatement.setInt(1, participantID);
+            ResultSet result = getParticipantByIDStatement.executeQuery();
+
+            if (result.getString("hashed_password").equals(hashedPassword)) {
+                deleteParticipantStatement.clearParameters();
+                deleteParticipantStatement.setInt(1, participantID);
+                deleteParticipantStatement.execute();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();;
+        }
+        return 0;
     }
 }

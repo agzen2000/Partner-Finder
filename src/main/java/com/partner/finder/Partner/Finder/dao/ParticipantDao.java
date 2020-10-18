@@ -16,7 +16,7 @@ public interface ParticipantDao {
 
     List<Skill> getSkills(int projectID);
 
-    int deleteParticipant(int projectID, int participantID, String hashedPassword);
+    int deleteParticipant(int participantID, String hashedPassword);
 
 
 }
