@@ -1,7 +1,6 @@
 package com.partner.finder.Partner.Finder.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.partner.finder.Partner.Finder.Skill;
 
 import java.util.*;
 

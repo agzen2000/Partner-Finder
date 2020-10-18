@@ -1,12 +1,10 @@
 package com.partner.finder.Partner.Finder.dao;
 
-import com.partner.finder.Partner.Finder.Skill;
 import com.partner.finder.Partner.Finder.model.Participant;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Repository("sqlDao")
 public class ParticipantSQL implements ParticipantDao {
@@ -21,6 +19,11 @@ public class ParticipantSQL implements ParticipantDao {
 
     @Override
     public List<Participant> selectAllParticipants() {
+        return DB;
+    }
+
+    @Override
+    public List<Participant> getParticipants(int projectID, List<Integer> skills) {
         return DB;
     }
 }
