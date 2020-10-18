@@ -4,7 +4,7 @@ function Option({ name }) {
   return (
     <div className="option">
       <input type="checkbox"></input>
-      <p>{name}</p>
+      <p className="option__name">{name}</p>
     </div>
   )
 }
