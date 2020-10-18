@@ -5,6 +5,7 @@ import com.partner.finder.Partner.Finder.model.Project;
 import com.partner.finder.Partner.Finder.model.Skill;
 import org.springframework.stereotype.Repository;
 
+import javax.servlet.http.Part;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
@@ -28,6 +29,12 @@ public class ParticipantSQL implements ParticipantDao {
     private static final String ADD_PARTICIPANT = "INSERT INTO Participants(projectID, name, contact, skills, " +
             "message, hashed_password, salt) VALUES(?, ?, ?, ?, ?, ?, ?)";
     private PreparedStatement addParticipantStatement;
+
+    // For get participant
+    private static final String GET_PARTICIPANT = "SELECT * FROM Participants AS P WHERE P.projectID = ?";
+    private static final String GET_SKILL = "SELECT * FROM Skills AS S WHERE S.id = ?";
+    private PreparedStatement getParticipantStatement;
+    private PreparedStatement getSkillStatement;
 
     public ParticipantSQL() throws SQLException, IOException {
         this(null, null, null, null);
@@ -73,6 +80,8 @@ public class ParticipantSQL implements ParticipantDao {
         getProjectCountStatement = conn.prepareStatement(GET_PROJECT_COUNT);
         addSkillStatement = conn.prepareStatement(ADD_SKILL);
         addParticipantStatement = conn.prepareStatement(ADD_PARTICIPANT);
+        getParticipantStatement = conn.prepareStatement(GET_PARTICIPANT);
+        getSkillStatement = conn.prepareStatement(GET_SKILL);
     }
 
     @Override
@@ -128,8 +137,64 @@ public class ParticipantSQL implements ParticipantDao {
         }
     }
 
+    private List<Skill> getSkills(String skills) throws SQLException {
+        String[] strArr = skills.split("[0-9]+");
+        List<Skill> skillList = new ArrayList<>();
+        for (String skillIDStr : strArr) {
+            int skillID = Integer.parseInt(skillIDStr);
+            getSkillStatement.clearParameters();
+            getSkillStatement.setInt(1, skillID);
+
+            ResultSet result = getSkillStatement.executeQuery();
+            if (! result.next()) {
+                throw new IllegalStateException("Skill does not exist!");
+            }
+            String skillName = result.getString("name");
+            int projectID = result.getInt("projectID");
+            skillList.add(new Skill(skillID, projectID, skillName));
+        }
+        return skillList;
+    }
+
     @Override
     public List<Participant> getParticipants(int projectID, List<Integer> skills) {
+        List<Participant> participants = new ArrayList<>();
+        try {
+            getParticipantStatement.clearParameters();
+            getParticipantStatement.setInt(1, projectID);
+            ResultSet results = getParticipantStatement.executeQuery();
+            // id, project id, name, contact, skills, message, hashed password, salt
+            while (results.next()) {
+                int id = results.getInt("id");
+                String name = results.getString("name");
+                String contact = results.getString("contact");
+                List<Skill> skillList = getSkills(results.getString("skills"));
+                String message = results.getString("message");
+                String salt = results.getString("salt");
+                boolean isValid = true;
+                if (skills != null) {
+                    for (int skill : skills) {
+                        boolean contains = false;
+                        for (Skill s : skillList) {
+                            if (s.id == skill) {
+                                contains = true;
+                                break;
+                            }
+                        }
+                        if (!contains) {
+                            isValid = false;
+                            break;
+                        }
+                    }
+                }
+                if (isValid) {
+                    participants.add(new Participant(id, name, contact, skillList, message, salt));
+                }
+            }
+            return participants;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

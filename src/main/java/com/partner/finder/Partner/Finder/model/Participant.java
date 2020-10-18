@@ -10,7 +10,6 @@ public class Participant {
     private final String contact;
     private final List<Skill> skills;
     private final String message;
-
     private final String hashedPassword;
     private final String salt;
 
@@ -27,6 +26,16 @@ public class Participant {
         this.skills = skills;
         this.message = message;
         this.hashedPassword = password;
+        this.salt = salt;
+    }
+
+    public Participant(int id, String name, String contact, List<Skill> skills, String message, String salt) {
+        this.id = id;
+        this.name = name;
+        this.contact = contact;
+        this.skills = skills;
+        this.message = message;
+        this.hashedPassword = "";
         this.salt = salt;
     }
 
