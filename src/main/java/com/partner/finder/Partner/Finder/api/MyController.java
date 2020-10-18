@@ -24,20 +24,17 @@ public class MyController {
 
     @PostMapping(path = "/project")
     public int createProject(@RequestBody Project project) {
-        return 1;
+        return participantDao.addProject(project);
     }
 
     @GetMapping(path = "/skills")
     public List<Skill> getSkills(@RequestParam int projectID) {
-        LinkedList<Skill> dummyList = new LinkedList<>();
-        dummyList.add(new Skill(1, 1 , "Java"));
-        dummyList.add(new Skill(2, 1, "C"));
-        return dummyList;
+        return participantDao.getSkills(projectID);
     }
 
     @PostMapping(path = "/add")
     public void addParticipant(@RequestParam int projectID, @RequestBody Participant participant) {
-        participantDao.addParticipant(participant);
+        participantDao.addParticipant(projectID, participant);
     }
 
     @GetMapping(path = "/participants")
@@ -47,4 +44,13 @@ public class MyController {
         System.out.println(skills);
         return participantDao.getParticipants(projectID, skills);
     }
+
+    @DeleteMapping(path = "/delete")
+    public int deleteParticipant(@RequestParam int projectID,
+                                 @RequestParam int participantID,
+                                 @RequestParam String hashedPassword) {
+        System.out.println("HI");
+        return participantDao.deleteParticipant(projectID, participantID, hashedPassword);
+    }
+
 }

@@ -7,28 +7,34 @@ import java.util.*;
 public class Participant {
     private final int id;
     private final String name;
-    private final String email;
+    private final String contact;
     private final List<Skill> skills;
     private final String message;
+    private final String hashedPassword;
+    private final String salt;
 
     public Participant(@JsonProperty("id") int id,
                        @JsonProperty("name") String name,
-                       @JsonProperty("email") String email,
+                       @JsonProperty("contact") String contact,
                        @JsonProperty("skills") List<Skill> skills,
-                       @JsonProperty("message") String message) {
+                       @JsonProperty("message") String message,
+                       @JsonProperty("password") String password,
+                       @JsonProperty("salt") String salt) {
         this.id = id;
         this.name = name;
-        this.email = email;
+        this.contact = contact;
         this.skills = skills;
         this.message = message;
+        this.hashedPassword = password;
+        this.salt = salt;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getContact() {
+        return contact;
     }
 
     public List<Skill> getSkills() {
