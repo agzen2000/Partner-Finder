@@ -12,6 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
 
 @Repository("sqlDao")
 public class ParticipantSQL implements ParticipantDao {
@@ -138,7 +139,13 @@ public class ParticipantSQL implements ParticipantDao {
     }
 
     private List<Skill> getSkills(String skills) throws SQLException {
-        String[] strArr = skills.split("^[[0-9]+]");
+        List<String> strArr = new ArrayList<>();
+        Scanner scan = new Scanner(skills);
+        while (scan.hasNext()) {
+            String str = scan.next();
+            str = str.substring(1, str.length() - 1);
+            strArr.add(str);
+        }
         List<Skill> skillList = new ArrayList<>();
         for (String skillIDStr : strArr) {
             int skillID = Integer.parseInt(skillIDStr);
