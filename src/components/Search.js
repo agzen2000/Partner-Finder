@@ -5,6 +5,9 @@ import WavesIcon from "../assets/waves.svg"
 
 function Search() {
   const [optionsDisplayed, setOptionsDisplayed] = useState(false)
+  // const handleSubmit = (e) => {
+  //   e.target.children.querySele
+  // }
 
   return (
     <form className="search">
