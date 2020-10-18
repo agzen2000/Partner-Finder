@@ -250,7 +250,9 @@ public class ParticipantSQL implements ParticipantDao {
                 deleteParticipantStatement.clearParameters();
                 deleteParticipantStatement.setInt(1, participantID);
                 deleteParticipantStatement.execute();
+                return 1;
             }
+            return 0;
         } catch (Exception e) {
             e.printStackTrace();;
         }
