@@ -172,7 +172,7 @@
   margin-left: 5px;
 }
 
-/****************************= FeatureRow.js *********************/
+/**************************** =FeatureRow.js *********************/
 .feature {
   margin-bottom: 50px;
   display: flex;
@@ -186,4 +186,43 @@
 
 .feature__heading {
   font-size: 28px;
+}
+
+/**************************** =Results.js *********************/
+.results__sub-header {
+  padding: 30px 22% 100px 22%;
+  background-color: #1A1A2E;
+  text-align: center;
+}
+
+.results__sub-header-title {
+  padding-bottom: 20px;
+  text-align: center;
+  font-size: 40px;
+  color: white;
+}
+
+.skill {
+  display: inline-block;
+  margin: 3px;
+  border-radius: 20px;
+  width: max-content;
+  padding: 10px;
+  background-color: #C4C4C4;
+  font-size: 12px;
+}
+
+.results__main {
+  padding: 50px 22%;
+  background-color: #222831;
+}
+
+/*********************************** ResultsTable.js ***********************/
+.results__table {
+  margin-top: 50px;
+  background-color: white;
+}
+
+.results__row {
+  color: rgba(0, 0, 0, 0.5)
 }

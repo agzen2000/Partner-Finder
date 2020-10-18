@@ -1,7 +1,7 @@
 import React from 'react'
 import Logo from "../assets/Logo.svg"
 import HeroImage from "../assets/Brainstorming.png"
-import Search from './Search'
+import CreateProject from './CreateProject'
 import ThinkingIcon from "../assets/Feature-Thinking.svg"
 import FeatureRow from './FeatureRow'
 import Feature1Icon from "../assets/Feature-1.svg"
@@ -21,7 +21,7 @@ function Home() {
           <p className="home__description">
             Have you ever encountered a difficulty with finding teammates for your project or hackathon idea? Well you’ve come to the right place, Peer Finder does that for you.
           </p>
-          <Search />
+          <CreateProject />
           <img className="home__hero-image" src={HeroImage} alt="hero"></img>
         </div>
         <div className="home__features">
