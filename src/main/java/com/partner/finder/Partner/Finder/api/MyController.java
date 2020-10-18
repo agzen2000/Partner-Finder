@@ -44,10 +44,9 @@ public class MyController {
     }
 
     @DeleteMapping(path = "/delete")
-    public int deleteParticipant(@RequestParam int projectID,
-                                 @RequestParam int participantID,
+    public int deleteParticipant(@RequestParam int id,
                                  @RequestParam String hashedPassword) {
-        return participantDao.deleteParticipant(participantID, hashedPassword);
+        return participantDao.deleteParticipant(id, hashedPassword);
     }
 
 }
