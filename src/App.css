@@ -14,7 +14,7 @@
   font-family: inter, sans-serif;
 }
 
-/************************* =App.js *******************/
+/************************* =Home.js *******************/
 .home {
   display: flex;
   flex-direction: column;
@@ -41,15 +41,54 @@
 }
 
 .home__main {
-  padding: 0px 15%;
   background-color: #1A1A2E;
   text-align: center;
+}
+
+.home__hero {
+  padding: 0px 22%;
 }
 
 .home__hero-image {
   width: 80%;
   max-width: 600px;
 }
+
+.home__features {
+  padding: 0px 22% 100px 22%;
+  background: #222831;
+}
+
+.home__thinking-icon {
+  padding: 50px 0 20px;
+}
+
+.home__question {
+  margin-bottom: 100px;
+  font-size: 32px;
+  color: white;
+}
+
+.home__footer {
+  padding: 20px 300px;
+  display: flex;
+  background: #222831;
+  border-top: 1px solid #8B8B8B;
+}
+
+.home__remark {
+  color: #FFF;
+}
+
+.home__footer-btn {
+  background: #222831;
+  color: #FFF;
+}
+
+.home__footer-btn:first-of-type {
+  margin-left: auto;
+}
+
 /* ******************************* =Search.js *************************/
 .searchbar {
   height: 50px;
@@ -59,30 +98,92 @@
 .searchbar__input {
   margin-right: 20px;
   padding: 0 25px;
-  flex: 0.8;
+  flex: 1;
   border-radius: 7px;
   font-size: 20px;
 }
 
 .searchbar__submit {
+  width: 125px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  flex: 0.2;
   background: #E94560;
   font-size: 18px;
   border-radius: 7px;
   color: white;
 }
 
-/*************************** =SearchOptions.js ************************/
-.search-options-overlay {
+.search__toggle-filters {
+  width: 80px;
+  padding: 10px;
   display: flex;
-  position: absolute;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 20px auto 0 0;
+  background: none;
+  border: 1px solid white;
+  border-radius: 8px;
+  color: white;
+}
+
+/*************************** =SearchOptions.js ************************/
+.overlay {
+  height: 300px;
+  padding: 20px;
   background: #343434;
   opacity: 0.95;
 }
 
-.search-options--hidden {
+.overlay--hidden {
   display: none;
+}
+
+.overlay__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.overlay__title {
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+}
+
+.overlay__title > span {
+  font-size: 12px;
+}
+
+.overlay__body {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/************************ =Option.js ****************************/
+.option {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.option__name {
+  margin-left: 5px;
+}
+
+/****************************= FeatureRow.js *********************/
+.feature {
+  margin-bottom: 50px;
+  display: flex;
+  color: white;
+  text-align: left;
+}
+
+.feature--reversed {
+  flex-direction: row-reverse;
+}
+
+.feature__heading {
+  font-size: 28px;
 }

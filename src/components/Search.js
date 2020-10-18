@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import SearchOptions from "./SearchOptions"
 import SubmitArrow from "../assets/submit_arrow.svg"
-
+import WavesIcon from "../assets/waves.svg"
 
 function Search() {
   const [optionsDisplayed, setOptionsDisplayed] = useState(false)
@@ -16,13 +16,16 @@ function Search() {
         </button>
       </div>
       <button
-        className="search-options-toggle"
+        className="search__toggle-filters"
         onClick={(e) => {
           e.preventDefault();
           setOptionsDisplayed(prev => !prev);
         }}
-      ></button>
-      <SearchOptions show={optionsDisplayed} />
+      >
+        <p>Skills</p>
+        <img src={WavesIcon} alt="radio waves"></img>
+      </button>
+      <SearchOptions shouldShow={optionsDisplayed} hide={() => setOptionsDisplayed(false)} />
     </form>
   )
 }
