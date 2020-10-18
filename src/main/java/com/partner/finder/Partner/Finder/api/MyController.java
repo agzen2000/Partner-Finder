@@ -40,8 +40,6 @@ public class MyController {
     @GetMapping(path = "/participants")
     public List<Participant> getParticipants(@RequestParam int projectID,
                                              @RequestParam(required = false) List<Integer> skills) {
-        System.out.println(projectID);
-        System.out.println(skills);
         return participantDao.getParticipants(projectID, skills);
     }
 
@@ -49,7 +47,6 @@ public class MyController {
     public int deleteParticipant(@RequestParam int projectID,
                                  @RequestParam int participantID,
                                  @RequestParam String hashedPassword) {
-        System.out.println("HI");
         return participantDao.deleteParticipant(projectID, participantID, hashedPassword);
     }
 

@@ -138,7 +138,7 @@ public class ParticipantSQL implements ParticipantDao {
     }
 
     private List<Skill> getSkills(String skills) throws SQLException {
-        String[] strArr = skills.split("[0-9]+");
+        String[] strArr = skills.split("^[[0-9]+]");
         List<Skill> skillList = new ArrayList<>();
         for (String skillIDStr : strArr) {
             int skillID = Integer.parseInt(skillIDStr);
