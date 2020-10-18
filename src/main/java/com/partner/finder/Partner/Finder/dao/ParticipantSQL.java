@@ -307,6 +307,10 @@ public class ParticipantSQL implements ParticipantDao {
             getParticipantByIDStatement.setInt(1, participantID);
             ResultSet result = getParticipantByIDStatement.executeQuery();
 
+            if (!result.next()) {
+                return 0;
+            }
+
             if (result.getString("hashed_password").equals(hashedPassword)) {
                 deleteParticipantStatement.clearParameters();
                 deleteParticipantStatement.setInt(1, participantID);
